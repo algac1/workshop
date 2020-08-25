@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/alberto-garcia/alberto-garcia.html">
+
+<dom-module id="workshop-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+<h2>Bienvenido a Alberto!!!</h2>
+
+<alberto-garcia title="{{prop1}}" input-value="{{prop1}}"> </alberto-garcia>
+<alberto-garcia title="{{prop2}}"> </alberto-garcia>
+<alberto-garcia title="{{prop3}}" input-value="{{prop3}}"> </alberto-garcia>
+
+  </template>
+
+
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class WorkshopApp extends Polymer.Element {
+      static get is() { return 'workshop-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'valor 1'
+          },
+          prop2: {
+            type: String,
+            value: 'valor 2 '
+                  },
+          prop3: {
+            type: String,
+            value: 'valor 3'
+                  }
+
+        };
+      }
+    }
+
+    window.customElements.define(WorkshopApp.is, WorkshopApp);
+  </script>
+</dom-module>
