@@ -1,5 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/alberto-garcia/alberto-garcia.html">
+<link rel="import" href="../../bower_components/login-component/login-component.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 
 <dom-module id="workshop-app">
   <template>
@@ -10,10 +13,29 @@
     </style>
 
 <h2>Bienvenido a Alberto!!!</h2>
+<login-component on-submit="show"> </login-component>
 
+
+<div hidden="[[!encendido]]">
 <alberto-garcia title="{{prop1}}" input-value="{{prop1}}"> </alberto-garcia>
 <alberto-garcia title="{{prop2}}"> </alberto-garcia>
 <alberto-garcia title="{{prop3}}" input-value="{{prop3}}"> </alberto-garcia>
+</div>
+
+<iron-ajax auto
+  url="https://pokeapi.co/api/v2/pokemon?limit=50&offset=0"
+  handle-as="json"
+  on-response="converter" >
+
+</iron-ajax>
+
+
+ <dom-repeat items="{{listName}}">
+      <template>
+        <paper-card heading="{{item.name}}" image="{{item.urlImage}}">
+        </paper-card> 
+      </template>
+    </dom-repeat>
 
   </template>
 
@@ -39,11 +61,41 @@
           prop3: {
             type: String,
             value: 'valor 3'
-                  }
-
+                  },            
+          encendido:{
+            type: Boolean,
+            value:false
+          },
+          listName:{
+            type: Array,
+            value: []
+          }           
+        
         };
       }
+
+      converter(newData,request){
+        /*console.log(request.response.results);*/
+        for (const pokemonData of request.response.results){
+          const name=pokemonData.name
+          const urlImage= `https://pokeres.bastionbot.org/images/pokemon/${this.getId(pokemonData.url)}.png`
+          this.listName=[...this.listName,{name,urlImage}]
+            
+        }
+      }
+      getId(url){
+        console.log(url.split("/")[6])
+        url.split("/")[6]
+        return url.split("/")[6]
+      }
+
+      show(e){
+        console.log(e.detail.result)
+        this.encendido=e.detail.result 
+      } 
     }
+
+
 
     window.customElements.define(WorkshopApp.is, WorkshopApp);
   </script>
